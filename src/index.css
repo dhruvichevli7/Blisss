@@ -1,0 +1,155 @@
+/* @import './fonts.css'; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* global.css */
+body {
+  padding-top: 4rem; /* 64px = h-16 */
+}
+
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-ExtraLightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}  
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fahkwang';
+  src: url('/fonts/Fahkwang-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Wrapper ensures thumbs don't overlap text */
+.price-range-wrapper {
+  /* the component sets relative & height in JSX, but safe to repeat */
+  position: relative;
+  height: 24px;
+}
+
+/* Single visual line */
+.price-range-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: black;
+  transform: translateY(-50%);
+  pointer-events: none;
+  border-radius: 9999px;
+}
+
+/* The overlaid range inputs */
+.price-range-input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  background: transparent;
+  pointer-events: none; /* let thumbs handle interaction */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Make sure the input element itself doesn't show a track */
+.price-range-input::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 2px;
+}
+.price-range-input::-moz-range-track {
+  background: transparent;
+  height: 2px;
+}
+
+/* Thumbs (the draggable black dots) */
+.price-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 9999px;
+  background: black;
+  cursor: pointer;
+  pointer-events: auto;   /* re-enable on the thumb */
+  margin-top: -6px;       /* centers the thumb over our track */
+}
+.price-range-input::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 9999px;
+  background: black;
+  cursor: pointer;
+  pointer-events: auto;
+  border: none;
+}
