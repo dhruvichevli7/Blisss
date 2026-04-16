@@ -1,4 +1,4 @@
-import Banner from "../../../assets/images/RecipeBAnner.png";
+import Banner from "../../../assets/images/RecipeBasnner.png";
 import Berry from "../../../assets/images/BerryMint.png";
 import Sunset from "../../../assets/images/Sunset.png";
 import Coconut from "../../../assets/images/Coconut.png";
