@@ -3,6 +3,21 @@ import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { BiCopyright } from "react-icons/bi";
 
 function Footer() {
+  const socialLinks = [
+    {
+      id: 2,
+      icon: <FaInstagram />,
+      link: "https://www.instagram.com/blisss.world ",
+      style: "bg-black text-white p-1 rounded-full transition",
+    },
+    {
+      id: 3,
+      icon: <FaWhatsapp />,
+      link: "https://chat.whatsapp.com/IRw4Kkn3gNXCNKD8pbrgYW",
+      style: "bg-black text-white p-1 rounded-full transition",
+    },
+  ];
+
   return (
     <>
       <footer className="bg-cream">
@@ -17,45 +32,30 @@ function Footer() {
           </div>
 
           <div className="flex flex-col order-3 lg:order-2">
-            <span>123-456-7890</span>
-            <span>info@mysite.com</span>
+            {/* <span>123-456-7890</span> */}
+            <span>blisss.world@gmail.com</span>
             <span className="my-4 ">India</span>
 
             <div className="border-b-[1px] border-black mt-4 mb-8 w-[12rem]"></div>
 
             <div className="flex space-x-4">
-              <a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[1.44rem] "
-              >
-                <FaFacebook />
-              </a>
-              <a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-black text-white p-1 rounded-full transition"
-              >
-                <FaInstagram className="" />
-              </a>
-              <a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-black text-white p-1 rounded-full transition"
-              >
-                <FaWhatsapp />
-              </a>
+              {socialLinks.map((social) => (
+                <a
+                  key={social.id}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={social.style}
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
           </div>
 
           <div className="flex flex-col lg:order-3 order-2">
             <h3 className="mb-5 text-xl font-medium">Privacy Policy</h3>
-            <span>
-              Terms & conditions
-            </span>
+            <span>Terms & conditions</span>
           </div>
 
           <div className="flex flex-col order-4">
@@ -67,11 +67,7 @@ function Footer() {
                 <label htmlFor="email" className="text-brown mb-3">
                   Email *
                 </label>
-                <input
-                  type="email"
-                  name="email"
-                  className="bg-transparent"
-                />
+                <input type="email" name="email" className="bg-transparent" />
               </div>
               <div className="border-b-[1px] border-black mt-4 mb-8 sm:w-[20rem] w-[18rem]"></div>
               <div className="my-6 flex flex-row">

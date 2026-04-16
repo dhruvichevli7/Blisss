@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import AuthModal from "../../common/AuthModal";
 import {
   ChevronRightIcon,
   PlusIcon,
   MinusIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  PowerIcon,
 } from "@heroicons/react/24/outline";
 import SOB from "@/assets/images/SOB.png";
 import SOBHover from "@/assets/images/SOB_hover.png";
@@ -20,56 +23,46 @@ import IrishHover from "@/assets/images/Irishcoffee_hover.png";
 import Sangria from "@/assets/images/Sangria.png";
 import SangriaHover from "@/assets/images/Sangria_hover.png";
 
+const imageMap = {
+  "SOB.png": SOB,
+  "SOB_hover.png": SOBHover,
+  "Mojito.png": Mojito,
+  "Mojito_hover.png": MojitoHover,
+  "Pinacolada.png": Pinacolada,
+  "Pinacolada_hover.png": PinacoladaHover,
+  "Cosmopolitan.png": Cosmopolitan,
+  "Cosmopolitan_hover.png": CosmopolitanHover,
+  "Irishcoffee.png": Irish,
+  "Irishcoffee_hover.png": IrishHover,
+  "Sangria.png": Sangria,
+  "Sangria_hover.png": SangriaHover,
+};
+
 function Shop() {
+  const [products, setProducts] = useState([]);
   const [showPrice, setShowPrice] = useState(false);
-  const [minPrice, setMinPrice] = useState(140);
-  const [maxPrice, setMaxPrice] = useState(200);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(500);
   const [isHovered, setIsHovered] = useState(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState("Recommended");
   const [isFilterOpen, setIsFilterOpen] = useState(false); // mobile filter drawer
 
-  const ABS_MIN = 140;
-  const ABS_MAX = 200;
+  const ABS_MIN = 0;
+  const ABS_MAX = 500;
 
-  const product = [
-    {
-      name: "Sex on the beach",
-      price: 140.0,
-      img: SOB,
-      HoverImg: SOBHover,
-    },
-    {
-      name: "Mojito",
-      price: 200.0,
-      img: Mojito,
-      HoverImg: MojitoHover,
-    },
-    {
-      name: "Pinacolada",
-      price: 190.0,
-      img: Pinacolada,
-      HoverImg: PinacoladaHover,
-    },
-    {
-      name: "Cosmopolitan",
-      price: 140.0,
-      img: Cosmopolitan,
-      HoverImg: CosmopolitanHover,
-    },
-    {
-      name: "Irish Coffee",
-      price: 160.0,
-      img: Irish,
-      HoverImg: IrishHover,
-    },
-    {
-      name: "Sangria",
-      price: 140.0,
-      img: Sangria,
-      HoverImg: SangriaHover,
-    },
-  ];
+  //Fetch product from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/products");
+        setProducts(res.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const sortOptions = [
     "Recommended",
@@ -82,7 +75,8 @@ function Shop() {
 
   // Sorting Logic
   const getSortedProducts = () => {
-    let sorted = [...product];
+    let sorted = [...products];
+
     switch (selectedSort) {
       case "Price (low to high)":
         sorted.sort((a, b) => a.price - b.price);
@@ -103,8 +97,40 @@ function Shop() {
   };
 
   const visibleProducts = getSortedProducts().filter(
-    (item) => item.price >= minPrice && item.price <= maxPrice
+    (item) => item.price >= minPrice && item.price <= maxPrice,
   );
+
+  const handleAddToCart = (product) => {
+    // Get existing cart
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // 🔥 get real image from imageMap
+  const actualImage = imageMap[product.images[0]];
+
+    // Check if product already exists
+    const existingItem = existingCart.find(
+      (item) => item._id === product.productId,
+    );
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      existingCart.push({
+        _id: product.productId, // important
+        name: product.name,
+        price: product.price,
+        images: [actualImage],
+        quantity: 1,
+      });
+    }
+
+    // Save back
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+
+    console.log("CART 👉", existingCart);
+
+    alert("Added to cart ✅");
+  };
 
   return (
     <section className="bg-main font-fahkwang">
@@ -149,7 +175,7 @@ function Shop() {
                       value={minPrice}
                       onChange={(e) =>
                         setMinPrice(
-                          Math.min(Number(e.target.value), maxPrice - 1)
+                          Math.min(Number(e.target.value), maxPrice - 1),
                         )
                       }
                       className="price-range-input"
@@ -161,7 +187,7 @@ function Shop() {
                       value={maxPrice}
                       onChange={(e) =>
                         setMaxPrice(
-                          Math.max(Number(e.target.value), minPrice + 1)
+                          Math.max(Number(e.target.value), minPrice + 1),
                         )
                       }
                       className="price-range-input"
@@ -233,27 +259,33 @@ function Shop() {
           {/* PRODUCTS GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-8 gap-6 md:gap-10">
             {visibleProducts.map((item, index) => {
+              const img = imageMap[item.images[0]];
+              const hoverImg = imageMap[item.images[1]];
+
               return (
                 <div
-                  key={item.name}
+                  key={item.productId}
                   className="flex flex-col xl:text-base text-xl h-full xl:mx-0 mx-4"
                 >
                   <div className="flex flex-col flex-1 ">
-                    <Link to="/Products">
+                    <Link to={`/Products/${item.productId}`}>
                       <img
-                        src={isHovered === index ? item.HoverImg : item.img}
+                        src={isHovered === index ? hoverImg : img}
                         alt={item.name}
                         className="xl:w-[266px] w-full mx-auto sm:h-[350px] mb-4 cursor-pointer"
                         onMouseEnter={() => setIsHovered(index)}
                         onMouseLeave={() => setIsHovered(null)}
                       />
                     </Link>
-                    <Link to="/Products">
+                    <Link to={`/Products/${item.productId}`}>
                       <span className="mt-4">{item.name}</span>
                     </Link>
-                    <span className="xl:mt-1 xl:mb-2 my-3">₹{item.price}</span>
+                    <span className="xl:mt-1 xl:mb-2 my-3">₹ {item.price}</span>
                   </div>
-                  <button className="xl:w-[266px] w-full h-10 bg-brown text-main font-light hover:underline mt-auto">
+                  <button
+                    onClick={() => handleAddToCart(item)}
+                    className="xl:w-[266px] w-full h-10 bg-brown text-main font-light hover:underline mt-auto"
+                  >
                     Add To Cart
                   </button>
                 </div>
@@ -346,7 +378,7 @@ function Shop() {
                       value={minPrice}
                       onChange={(e) =>
                         setMinPrice(
-                          Math.min(Number(e.target.value), maxPrice - 1)
+                          Math.min(Number(e.target.value), maxPrice - 1),
                         )
                       }
                       className="price-range-input"
@@ -358,7 +390,7 @@ function Shop() {
                       value={maxPrice}
                       onChange={(e) =>
                         setMaxPrice(
-                          Math.max(Number(e.target.value), minPrice + 1)
+                          Math.max(Number(e.target.value), minPrice + 1),
                         )
                       }
                       className="price-range-input"

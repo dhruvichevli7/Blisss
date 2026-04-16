@@ -13,7 +13,30 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
+
+  const updateCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const total = cart.reduce((acc, item) => acc + (item.quantity || 0), 0);
+    setCartCount(total);
+  };
+
+  // 3. Effect to sync count on mount and via events
+  useEffect(() => {
+    // Initial load
+    updateCartCount();
+
+    // Listen for custom events (triggered by other components)
+    window.addEventListener("cartUpdated", updateCartCount);
+    // Listen for storage changes (triggered by other tabs)
+    window.addEventListener("storage", updateCartCount);
+
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+      window.removeEventListener("storage", updateCartCount);
+    };
+  }, []);
 
   const navLinkClasses = (extra = "") => ({ isActive }) =>
   `${extra} hover:text-brown transition-colors ${
@@ -83,10 +106,10 @@ function Navbar() {
           </ul>
           <div
             className="flex items-center gap-3 cursor-pointer"
-            onClick={handleCartClick}
+            onClick={handleCartClick} 
           >
             <ShoppingCartIcon className="w-6 h-6" />
-            <span>0</span>
+            <span>{cartCount}</span>
           </div>
         </div>
 
@@ -100,7 +123,7 @@ function Navbar() {
             }`}
           >
             <ShoppingCartIcon className="w-6 h-6 text-black" />
-            <span>0</span>
+            <span>{cartCount}</span>
           </button>
 
           <button

@@ -1,0 +1,74 @@
+### Get all products
+GET http://localhost:5000/api/products
+
+### Create a product
+POST http://localhost:5000/api/products/add
+Content-Type: application/json
+
+{
+  "name": "Sex on the Beach",
+  "price": 90,
+  "images": ["SOB.png", "SOB_hover.png"],
+  "nutrition": "No Added Sugar, Naturally Sweetened, No Artificial Sweeteners, No Preservatives Added, No Artificial Colors or Flavors, Plant-Based / Vegan Friendly, Clean Label, Fat Free, Low Calorie, Hydrating, Rich in Vitamin C",
+  "description": "Zesty, fruity, and unapologetically fun — this tropical escape blends sun-ripened peach, tangy orange, and a splash of cranberry. Whether you’re sipping solo or stirring it up, it’s the taste of summer in every can."
+}
+
+### Create Product 2: Mojito
+POST http://localhost:5000/api/products/add
+Content-Type: application/json
+
+{
+  "name": "Mojito",
+  "price": 90,
+  "images": ["Mojito.png", "Mojito_hover.png"],
+  "nutrition": "No Added Sugar, Naturally Sweetened, No Artificial Sweeteners, No Preservatives Added, No Artificial Colors or Flavors, Plant-Based / Vegan Friendly, Clean Label, Fat Free, Low Calorie, Hydrating, Rich in Vitamin C",
+  "description": "Bright lime, garden-fresh mint, and a kiss of cane essence — Mojito Muse is a crisp, refreshing take on the classic. It's your perfect reset button — cool, calm, and totally crushable."
+}
+
+### Create Product 3: Pinacolada 
+POST http://localhost:5000/api/products/add
+Content-Type: application/json
+
+{
+  "name": "Pinacolda",
+  "price": 120,
+  "images": ["Pinacolada.png", "Pinacolada_hover.png"],
+  "nutrition": "No Added Sugar, Naturally Sweetened, Made with Real Juice, No Artificial Sweeteners, No Preservatives Added, No Artificial Colors or Flavors, Contains Dairy, Clean Label, Rich in Vitamin C",
+  "description": "Creamy coconut meets golden pineapple in this lush island-inspired blend. Silky, sweet, and breezy — it’s like vacation in a can. Add rum for a cocktail or enjoy straight for a guilt-free indulgence."
+}
+
+### Create Product 4: Cosmopolitan  
+POST http://localhost:5000/api/products/add
+Content-Type: application/json
+
+{
+  "name": "Cosmopolitan",
+  "price": 90,
+  "images": ["Cosmopolitan.png", "Cosmopolitan_hover.png"],
+  "nutrition": "No Added Sugar,Naturally Sweetened, Made with Real Juice (Reconstituted), No Artificial Sweeteners, No Preservatives Added, No Artificial Colors or Flavors, Plant-Based / Vegan Friendly, Clean Label, Fat Free, Low Calorie, Hydrating, Rich in Vitamin C",
+  "description": "Bold, bright, and effortlessly chic. Blisss' take on the classic Cosmopolitan blends cranberry tartness with zesty lime and a whisper of orange essence. It’s your go-to for rooftop evenings, brunch catch-ups, or any moment that calls for a touch of glam — refined on its own or vodka-ready for extra flair."
+}
+
+### Create Product 5: Irish Coffee   
+POST http://localhost:5000/api/products/add
+Content-Type: application/json
+
+{
+  "name": "Irish Coffee",
+  "price": 120,
+  "images": ["Irishcoffee.png", "Irishcoffee_hover.png"],
+  "nutrition": "No Added White Sugar, Contains Dairy, Made in Small Batches, No Preservatives Added, No Artificial Colors or Flavors, No Artificial Sweeteners, Clean Label",
+  "description": "Where comfort meets sophistication. This non-alcoholic interpretation offers a rich, roasted coffee base, smooth vanilla creaminess, and a subtle chocolate warmth. Velvet Irish Coffee is your cozy night companion — served chilled or over ice, with or without a whiskey twist. "
+}
+
+### Create Product 6: Sangria  
+POST http://localhost:5000/api/products/add
+Content-Type: application/json
+
+{
+  "name": "Sangria",
+  "price": 90,
+  "images": ["Sangria.png", "Sangria_hover.png"],
+  "nutrition": "No Added Sugar, Naturally Sweetened, Made with Real Juice, No Artificial Sweeteners, No Preservatives Added, No Artificial Colors or Flavors, Plant-Based / Vegan Friendly, Clean Label, Fat Free, Low Calorie, Hydrating, Rich in Vitamin C, Immunity Supporting",
+  "description": "A vibrant medley of ripe red berries, orchard fruits, and citrus kissed with spice. Sunset Sangria brings the soul of a Spanish evening to your glass — refreshing, celebratory, and endlessly sippable. Just as delightful alcohol-free, or spike it with wine or brandy to bring the fiesta full circle."
+}

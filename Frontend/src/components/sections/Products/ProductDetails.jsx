@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import {useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeftIcon,
@@ -7,14 +9,44 @@ import {
   PlusIcon,
   MinusIcon,
 } from "@heroicons/react/24/outline";
-import SOB1 from "@/assets/images/SOB.png";
-import SOB2 from "@/assets/images/SOB_hover.png";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import SOB from "@/assets/images/SOB.png";
+import SOBHover from "@/assets/images/SOB_hover.png";
+import Mojito from "@/assets/images/Mojito.png";
+import MojitoHover from "@/assets/images/Mojito_hover.png";
+import Pinacolada from "@/assets/images/Pinacolada.png";
+import PinacoladaHover from "@/assets/images/Pinacolada_hover.png";
+import Cosmopolitan from "@/assets/images/Cosmopolitan.png";
+import CosmopolitanHover from "@/assets/images/Cosmopolitan_hover.png";
+import Irish from "@/assets/images/Irishcoffee.png";
+import IrishHover from "@/assets/images/Irishcoffee_hover.png";
+import Sangria from "@/assets/images/Sangria.png";
+import SangriaHover from "@/assets/images/Sangria_hover.png";
 
-const Images = [SOB1, SOB2];
+const imageMap = {
+  "SOB.png": SOB,
+  "SOB_hover.png": SOBHover,
+  "Mojito.png": Mojito,
+  "Mojito_hover.png": MojitoHover,
+  "Pinacolada.png": Pinacolada,
+  "Pinacolada_hover.png": PinacoladaHover,
+  "Cosmopolitan.png": Cosmopolitan,
+  "Cosmopolitan_hover.png": CosmopolitanHover,
+  "Irishcoffee.png": Irish,
+  "Irishcoffee_hover.png": IrishHover,
+  "Sangria.png": Sangria,
+  "Sangria_hover.png": SangriaHover,
+};
 
 function ProductDetails() {
+  const { id } = useParams();
+  const productId = Number(id);
+  const navigate = useNavigate();
+
+  const [product, setProduct] = useState(null);
+  const [productIds, setProductIds] = useState([]);
   const [Quantity, setQuantity] = useState(1);
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [isModelOpen, setIsModelOpen] = useState(false);
 
@@ -30,6 +62,73 @@ function ProductDetails() {
 
   const [isNutritionOpen, setIsNutritionOpen] = useState(false);
 
+  const handleAddToCart = () => {
+  const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // 🔥 Convert image filename → actual image
+  const actualImage = imageMap[product.images[0]];
+
+  const existingItem = existingCart.find(
+    (item) => item._id === product.productId
+  );
+
+  if (existingItem) {
+    existingItem.quantity += Quantity; // use selected quantity
+  } else {
+    existingCart.push({
+      _id: product.productId,
+      name: product.name,
+      price: product.price,
+      images: [actualImage],
+      quantity: Quantity,
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(existingCart));
+
+  console.log("CART 👉", existingCart);
+
+  alert("Added to cart ✅");
+};
+
+  //Fecth product details
+  useEffect(() => {
+    let cancelled = false;
+    async function fecthProduct() {
+      try{
+        const res = await axios.get(`http://localhost:5000/api/products/${productId}`);
+        if(!cancelled) setProduct(res.data);
+      }catch (err) {
+        console.error("Error fetching product details:", err);
+        if(!cancelled) setProduct(null);
+      }
+    }
+    if(!isNaN(productId)) fecthProduct();
+    return () => { cancelled = true; };
+  },[productId]);
+
+  //Fetch all product for prev & next
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchIds() {
+      try{
+        const res = await axios.get("http://localhost:5000/api/products");
+        if(cancelled) return;
+        //extract prodct id and sort ascending
+        const ids = res.data
+        .map((p) => Number(p.productId))
+        .filter((n) => !Number.isNaN(n))
+        .sort((a, b) =>a - b );
+        setProductIds(ids); 
+      }catch (err){
+        console.error("Error fetching product list:",err);
+        if(!cancelled) setProductIds([]);
+      }
+    }
+    fetchIds();
+    return () => { cancelled = true; };
+  }, []);
+
   const decrease = () => {
     setQuantity((p) => (p > 1 ? p - 1 : 1));
   };
@@ -38,38 +137,34 @@ function ProductDetails() {
     setQuantity((p) => p + 1);
   };
 
-  useEffect(() => {
-    Images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
+  // Prev / Next logic using the productIds array (safe even if IDs are non-consecutive)
+  const currentIndex = productIds.indexOf(productId);
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex !== -1 && currentIndex < productIds.length - 1;
+  const prevId = hasPrev ? productIds[currentIndex - 1] : null;
+  const nextId = hasNext ? productIds[currentIndex + 1] : null;
 
-  useEffect(() => {
-    document.body.style.overflow = isModelOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isModelOpen]);
+  const goPrev = (e) => {
+    e?.preventDefault();
+    if (hasPrev && prevId != null) navigate(`/Products/${prevId}`);
+  };
 
-  useEffect(() => {
-    if (!isModelOpen) return;
+  const goNext = (e) => {
+    e?.preventDefault();
+    if (hasNext && nextId != null) navigate(`/Products/${nextId}`);
+  };
 
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowLeft" && selectedImage > 0) {
-        prevImage();
-      } else if (e.key === "ArrowRight" && selectedImage < Images.length - 1) {
-        nextImage();
-      } else if (e.key === "Escape") {
-        setIsModelOpen(false);
-      }
-    };
+  if(!product) {
+    return (
+      <div className="text-center py-20 text-2xl font-light">
+        Loading product...
+      </div>
+    );
+  }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isModelOpen, selectedImage]);
+  const Images = product.images.map(
+    (img) => `/src/assets/images/${img}`
+  );
 
   const prevImage = () => {
     setSelectedImage((i) => (i === 0 ? Images.length - 1 : i - 1));
@@ -86,11 +181,34 @@ function ProductDetails() {
       <section className="bg-main font-fahkwang pb-6">
         <div className="flex flex-col w-3/4 mx-auto pt-10">
           <div className="flex justify-between text-[15px] pb-14">
-            <span>Home / All Products / Sex on the beach</span>
+            <span>Home / All Products / 
+              <span className="opacity-50"> {product.name} </span>
+            </span>
+
             <div className="hidden md:flex gap-2">
+              <button
+                onClick={goPrev}
+                disabled={!hasPrev}
+                className={`flex items-center gap-2 ${
+                  !hasPrev ? "opacity-40 cursor-pointer" : "cursor-pointer"
+                }`}
+                aria-label="Previous product"
+              >
               <ChevronLeftIcon className="w-5 h-5 my-auto" />
-              <span>Prev | Next</span>
-              <ChevronRightIcon className="w-5 h-5 my-auto" />
+              <span  className="underline">Prev</span>
+              </button>
+               <span className="text-sm opacity-60">|</span>
+               <button
+                onClick={goNext}
+                disabled={!hasNext}
+                className={`flex items-center gap-2 ${
+                  !hasNext ? "opacity-40 cursor-pointer" : "cursor-pointer"
+                }`}
+                aria-label="Next product"
+              >
+                <span className="underline">Next</span>
+                <ChevronRightIcon className="w-5 h-5" />
+              </button>
             </div>
           </div>
 
@@ -107,7 +225,7 @@ function ProductDetails() {
               >
                 <img
                   src={Images[selectedImage]}
-                  alt="Sex On The Beach"
+                  alt={product.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = Images[0];
@@ -130,7 +248,7 @@ function ProductDetails() {
 
               {/* Dots for mobile view */}
               <div className="flex justify-center gap-2 mt-4 md:hidden">
-                {Images.map((_, idx) => (
+                {Images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
@@ -163,19 +281,16 @@ function ProductDetails() {
                 ))}
               </div>
               <p className="hidden md:flex">
-                Zesty, fruity, and unapologetically fun — this tropical escape
-                blends sun-ripened peach, tangy orange, and a splash of
-                cranberry. Whether you’re sipping solo or stirring it up, it’s
-                the taste of summer in every can.
+                {product.description}
               </p>
             </div>
 
             <div className="flex flex-col md:w-1/2 mt-6 md:mt-0">
               <h1 className="font-regular text-[1.6rem]">
-                Sex on the beach
+                {product.name}
               </h1>
               <span className="font-regular text-xl my-6">
-                ₹140.00
+                ₹ {product.price}
               </span>
               <span className="font-light text-sm mb-6">
                 Quantity*
@@ -195,16 +310,16 @@ function ProductDetails() {
                   +
                 </button>
               </div>
-              <button className="w-full md:w-[24rem] h-10 bg-brown text-main font-light hover:underline my-5">
-                Add To Cart
+              <button
+                onClick={handleAddToCart}
+                className="w-full md:w-[24rem] h-10 bg-brown text-main font-light hover:underline my-5"
+              >
+                  Add To Cart
               </button>
 
               {/* Description */}
               <p className="flex md:hidden mb-6 text-sm leading-relaxed">
-                Zesty, fruity, and unapologetically fun — this tropical escape
-                blends sun-ripened peach, tangy orange, and a splash of
-                cranberry. Whether you’re sipping solo or stirring it up, it’s
-                the taste of summer in every can.
+                {product.description}
               </p>
 
               {/* Nutrition & Health */}
@@ -236,18 +351,7 @@ function ProductDetails() {
                         nothing artificial
                       </p>
                       <br />
-                      <p>No Added Sugar</p>
-                      <p>Naturally Sweetened</p>
-                      <p>Made with Real Juice (Reconstituted)</p>
-                      <p>No Artificial Sweeteners</p>
-                      <p>No Preservatives Added</p>
-                      <p>No Artificial Colors or Flavors</p>
-                      <p>Plant-Based / Vegan Friendly</p>
-                      <p>Clean Label</p>
-                      <p>Fat Free</p>
-                      <p>Low Calorie</p>
-                      <p>Hydrating</p>
-                      <p>Rich in Vitamin C</p>
+                      <p>{ product.nutrition }</p>
                     </Motion.div>
                   )}
                 </AnimatePresence>

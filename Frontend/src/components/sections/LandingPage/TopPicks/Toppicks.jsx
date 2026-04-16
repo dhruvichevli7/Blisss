@@ -38,36 +38,36 @@ const ProductCard = ({ product }) => {
 
 function Toppicks() {
   const products = [
-    { 
-      name: "Sex on the beach", 
-      price: 140.0, 
-      image: SOB,
-      hoverImage: SOBHover, 
-    },
+    // { 
+    //   name: "Sex on the beach", 
+    //   price: 140.0, 
+    //   image: SOB,
+    //   hoverImage: SOBHover, 
+    // },
     { 
       name: "Mojito", 
       price: 140.0, 
       image: Mojito,
       hoverImage: MojitoHover,
     },
-    { 
-      name: "Pinacolada", 
-      price: 140.0, 
-      image: Pinacolada,
-      hoverImage: PinacoladaHover, 
-    },
+    // { 
+    //   name: "Pinacolada", 
+    //   price: 140.0, 
+    //   image: Pinacolada,
+    //   hoverImage: PinacoladaHover, 
+    // },
     { 
       name: "Cosmopolitan", 
       price: 140.0, 
       image: Cosmopolitan,
       hoverImage: CosmopolitanHover, 
     },
-    { 
-      name: "Irish coffee", 
-      price: 140.0, 
-      image: Irish,
-      hoverImage: IrishHover, 
-    },
+    // { 
+    //   name: "Irish coffee", 
+    //   price: 140.0, 
+    //   image: Irish,
+    //   hoverImage: IrishHover, 
+    // },
     {
       name: "Sangria", 
       price: 140.0, 
@@ -98,7 +98,7 @@ function Toppicks() {
     dots: false,
     infinite: true,
     speed: 600,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,

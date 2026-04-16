@@ -1,6 +1,12 @@
 import ContactBanner from "../../../assets/images/ContactBanner.png";
 
 function Contact() {
+  
+  const socialLinks = [
+    { name: "Instagram", url: "https://instagram.com/yourhandle" },
+    { name: "Whatsapp", url: "https://chat.whatsapp.com/your-community-id" },
+  ];
+
   return (
     <>
       <section className="bg-cream lg:py-10 font-fahkwang">
@@ -26,16 +32,16 @@ function Contact() {
           <div className="flex flex-col text-[20px] lg:text-[26px] leading-[1.8] text-left">
             <div className="flex flex-col font-fahkwangs">
               <span>
-                500 Terry Francine St. <br /> San Francisco, CA <br /> 94158
+                Plot No. 1064, Road No.86,  <br /> Sachin GIDC, Surat. <br /> 394230
               </span>
             </div>
             <div className="flex flex-col font-fahkwang py-8 lg:py-12 items-start">
               <div className="border-black border-b-[0.2px] w-16 mb-8 lg:mb-14"></div>
-              <span>
+              {/* <span>
                 Phone <br /> 123-456-7890 <br />
-              </span>
+              </span> */}
               <span className="mt-4">
-                Email <br /> info@mysite.com
+                Email <br /> blisss.world@gmail.com
               </span>
             </div>
           </div>
@@ -101,10 +107,18 @@ function Contact() {
           ></iframe>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 lg:mt-0 mt-10 bg-main lg:w-[88%] w-full lg:h-32 h-auto mx-auto text-2xl cursor-pointer">
-          <span className="m-auto py-4">Facebook</span>
-          <span className="m-auto py-4">Instagam</span>
-          <span className="m-auto py-4">Whatsapp</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:mt-0 mt-10 bg-main lg:w-[88%] w-full lg:h-32 h-auto mx-auto text-2xl cursor-pointer">
+          {socialLinks.map((social, index) => (
+            <a
+              key={index}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="m-auto py-4 w-full h-full flex items-center justify-center hover:text-brown transition-colors duration-300"
+            >
+              {social.name}
+            </a>
+          ))}
         </div>
       </section>
     </>

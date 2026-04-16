@@ -1,29 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SOB from "@/assets/images/SOB.png";
 import { TrashIcon, DocumentIcon } from "@heroicons/react/24/outline";
 import { GoTag } from "react-icons/go";
 import { LockClosedIcon } from "@heroicons/react/16/solid";
+import CheckoutModal from "../../common/CheckoutModal";
 
 function Cart() {
-  const [Quantity, setQuantity] = useState(1);
+  // const [Quantity, setQuantity] = useState(1);
+  const [cartItems, setCartItems] = useState([]);
   const [showPromo, setShowPromo] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState("");
 
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState("");
 
-  const pricePerItem = 140;
-  const subtotal = pricePerItem * Quantity;
+  // const pricePerItem = 140;
+  // const subtotal = pricePerItem * Quantity;
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
   const total = subtotal - discount;
 
-  const decrease = () => {
-    setQuantity((p) => (p > 1 ? p - 1 : 1));
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const fetchCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItems(cart);
   };
 
-  const increase = () => {
-    setQuantity((p) => p + 1);
+  const updateQty = (productId, newQty) => {
+    if (newQty < 1) return;
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const item = cart.find((i) => i._id === productId);
+    if (item) {
+      item.quantity = newQty;
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    fetchCart();
+  };
+
+  const removeItem = (productId) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const updated = cart.filter((i) => i._id !== productId);
+
+    localStorage.setItem("cart", JSON.stringify(updated));
+    fetchCart();
   };
 
   const applyPromo = () => {
@@ -47,38 +79,51 @@ function Cart() {
 
             <div className="border-b-[1px] border-[#0003] my-6"></div>
 
-            <div className="flex flex-row justify-between items-start flex-wrap sm:flex-nowrap gap-4 sm:gap-8">
-              <img
-                src={SOB}
-                alt="Sex On The Beach"
-                className="h-32 w-[100px] object-cover"
-              />
-              <div className="flex flex-col gap-3 text-[16px] flex-grow min-w-[120px]">
-                <h3>Sex on the beach</h3>
-                <span>₹{pricePerItem.toFixed(2)}</span>
-              </div>
-              <div className="flex items-center w-20 h-7 border border-black px-3 space-x-2 font-extralight mb-6">
-                <button
-                  type="button"
-                  onClick={decrease}
-                  disabled={Quantity === 1}
-                  className={`text-2xl
-                    ${Quantity === 1 ? "text-gray-400" : "text-black"}`}
+            {cartItems.length === 0 ? (
+              <p>Your cart is empty</p>
+            ) : (
+              cartItems.map((item) => (
+                <div
+                  key={item._id}
+                  className="flex flex-row justify-between items-start flex-wrap sm:flex-nowrap gap-4 sm:gap-8"
                 >
-                  -
-                </button>
-                <span className="text-base">{Quantity}</span>
-                <button type="button" onClick={increase} className="text-xl">
-                  +
-                </button>
-              </div>
-              <div className="flex items-center justify-between sm:justify-start gap-2">
-                <span>₹{subtotal.toFixed(2)}</span>
-              </div>
-              <button className="flex">
-                <TrashIcon className="w-6 h-5 text-[#0009] stroke-[1.2]"/>
-              </button>
-            </div>
+                  <img
+                    src={item.images?.[0]}
+                    alt={item.name}
+                    className="h-32 w-[100px] object-cover"
+                  />
+                  <div className="flex flex-col gap-3 text-[16px] flex-grow min-w-[120px]">
+                    <h3>{item.name}</h3>
+                    <span>₹{item.price.toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center w-20 h-7 border border-black px-3 space-x-2 font-extralight mb-6">
+                    <button
+                      type="button"
+                      onClick={() => updateQty(item._id, item.quantity - 1)}
+                      disabled={item.quantity === 1}
+                      className={`text-2xl
+                    ${item.quantity === 1 ? "text-gray-400" : "text-black"}`}
+                    >
+                      -
+                    </button>
+                    <span className="text-base">{item.quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => updateQty(item._id, item.quantity + 1)}
+                      className="text-xl"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between sm:justify-start gap-2">
+                    <span>₹{(item.price * item.quantity).toFixed(2)}</span>
+                  </div>
+                  <button className="flex" onClick={() => removeItem(item._id)}>
+                    <TrashIcon className="w-6 h-5 text-[#0009] stroke-[1.2]" />
+                  </button>
+                </div>
+              ))
+            )}
 
             <div className="border-b-[1px] border-[#0003] my-6"></div>
 
@@ -132,7 +177,7 @@ function Cart() {
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="e.g., Leave outside the front door"
                   className="border border-black bg-transparent px-2 py-2 text-main w-full sm:w-96 h-24 placeholder-black focus:outline-none focus:ring-0 caret-black"
-                  />
+                />
               )}
             </div>
           </div>
@@ -169,7 +214,7 @@ function Cart() {
               </div>
             </div>
 
-            <button className="h-10 bg-brown text-main font-light hover:underline my-6">
+            <button onClick={() => setIsModalOpen(true)} className="h-10 bg-brown text-main font-light hover:underline my-6">
               Checkout
             </button>
 
@@ -180,6 +225,10 @@ function Cart() {
           </div>
         </div>
       </section>
+      <CheckoutModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </>
   );
 }
