@@ -33,7 +33,7 @@ function Footer() {
 
           <div className="flex flex-col order-3 lg:order-2">
             {/* <span>123-456-7890</span> */}
-            <span>blisss.world@gmail.com</span>
+            <span>blisssworld9@gmail.com</span>
             <span className="my-4 ">India</span>
 
             <div className="border-b-[1px] border-black mt-4 mb-8 w-[12rem]"></div>

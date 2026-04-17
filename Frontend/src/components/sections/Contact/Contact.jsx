@@ -41,7 +41,7 @@ function Contact() {
                 Phone <br /> 123-456-7890 <br />
               </span> */}
               <span className="mt-4">
-                Email <br /> blisss.world@gmail.com
+                Email <br /> blisssworld9@gmail.com
               </span>
             </div>
           </div>
@@ -99,7 +99,7 @@ function Contact() {
         {/* map */}
         <div className="w-full h-72 md:h-full overflow-hidden">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.9664734014227!2d72.7964369750517!3d21.153732483474915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04dfed0748739%3A0x621140352503fc89!2sShubh%20Laxmi%20Bunglows!5e0!3m2!1sen!2sin!4v1752646761225!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.5293837630543!2d72.8422465751451!3d21.17111918051406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04e3145437eeb%3A0x59f78486eed7054!2s86%2C%20Rd%20No%208%2C%20Udhana%20GIDC%2C%20Udhna%20Udhyog%20Nagar%2C%20Udhana%2C%20Surat%2C%20Gujarat%20394210!5e0!3m2!1sen!2sin!4v1776412489087!5m2!1sen!2sin"
             className="lg:w-[88%] w-full h-80 mx-auto my-12"
             data-aos="fade"
             data-aos-delay="300"
