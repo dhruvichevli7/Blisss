@@ -12,7 +12,11 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: ["https://www.blisss.world", "https://blissss.world"],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/products", productRoutes);
