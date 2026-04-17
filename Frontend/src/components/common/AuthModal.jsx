@@ -25,7 +25,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
 
     try {
       if (mode === "signup") {
-        await axios.post("http://localhost:5000/api/auth/signup", {
+        await axios.post("https://blisss-ptkv.onrender.com/api/auth/signup", {
           username,
           email,
           password,
@@ -37,7 +37,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
       }
 
       if (mode === "login") {
-        const res = await axios.post("http://localhost:5000/api/auth/login", {
+        const res = await axios.post("https://blisss-ptkv.onrender.com/api/auth/login", {
           email,
           password,
         });
@@ -53,7 +53,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
       }
 
       if (mode === "forgot") {
-        await axios.post("http://localhost:5000/api/auth/forgot-password", {
+        await axios.post("https://blisss-ptkv.onrender.com/api/auth/forgot-password", {
           email,
         });
 

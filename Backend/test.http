@@ -1,8 +1,8 @@
 ### Get all products
-GET http://localhost:5000/api/products
+GET https://blisss-ptkv.onrender.com/api/products
 
 ### Create a product
-POST http://localhost:5000/api/products/add
+POST https://blisss-ptkv.onrender.com/api/products/add
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### Create Product 2: Mojito
-POST http://localhost:5000/api/products/add
+POST https://blisss-ptkv.onrender.com/api/products/add
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### Create Product 3: Pinacolada 
-POST http://localhost:5000/api/products/add
+POST https://blisss-ptkv.onrender.com/api/products/add
 Content-Type: application/json
 
 {
@@ -38,7 +38,7 @@ Content-Type: application/json
 }
 
 ### Create Product 4: Cosmopolitan  
-POST http://localhost:5000/api/products/add
+POST https://blisss-ptkv.onrender.com/api/products/add
 Content-Type: application/json
 
 {
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 
 ### Create Product 5: Irish Coffee   
-POST http://localhost:5000/api/products/add
+POST https://blisss-ptkv.onrender.com/api/products/add
 Content-Type: application/json
 
 {
@@ -62,7 +62,7 @@ Content-Type: application/json
 }
 
 ### Create Product 6: Sangria  
-POST http://localhost:5000/api/products/add
+POST https://blisss-ptkv.onrender.com/api/products/add
 Content-Type: application/json
 
 {

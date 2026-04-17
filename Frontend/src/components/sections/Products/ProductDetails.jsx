@@ -96,7 +96,7 @@ function ProductDetails() {
     let cancelled = false;
     async function fecthProduct() {
       try{
-        const res = await axios.get(`http://localhost:5000/api/products/${productId}`);
+        const res = await axios.get(`https://blisss-ptkv.onrender.com/api/products/${productId}`);
         if(!cancelled) setProduct(res.data);
       }catch (err) {
         console.error("Error fetching product details:", err);
@@ -112,7 +112,7 @@ function ProductDetails() {
     let cancelled = false;
     async function fetchIds() {
       try{
-        const res = await axios.get("http://localhost:5000/api/products");
+        const res = await axios.get("https://blisss-ptkv.onrender.com/api/products");
         if(cancelled) return;
         //extract prodct id and sort ascending
         const ids = res.data
