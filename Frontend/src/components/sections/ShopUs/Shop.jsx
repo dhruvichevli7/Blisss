@@ -257,7 +257,7 @@ function Shop() {
           </div>
 
           {/* PRODUCTS GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-8 gap-6 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-8 gap-x-6 *:gap-y10">
             {visibleProducts.map((item, index) => {
               const img = imageMap[item.images[0]];
               const hoverImg = imageMap[item.images[1]];
@@ -265,14 +265,14 @@ function Shop() {
               return (
                 <div
                   key={item.productId}
-                  className="flex flex-col xl:text-base text-xl h-full xl:mx-0 mx-4"
+                  className="flex flex-col xl:text-base text-xl h-full "
                 >
                   <div className="flex flex-col flex-1 ">
                     <Link to={`/Products/${item.productId}`}>
                       <img
                         src={isHovered === index ? hoverImg : img}
                         alt={item.name}
-                        className="xl:w-[266px] w-full mx-auto sm:h-[350px] mb-4 cursor-pointer"
+                        className=" w-full sm:h-[350px] mb-4 cursor-pointer object-cover"
                         onMouseEnter={() => setIsHovered(index)}
                         onMouseLeave={() => setIsHovered(null)}
                       />
@@ -284,7 +284,7 @@ function Shop() {
                   </div>
                   <button
                     onClick={() => handleAddToCart(item)}
-                    className="xl:w-[266px] w-full h-10 bg-brown text-main font-light hover:underline mt-auto"
+                    className="w-full h-10 bg-brown text-main font-light hover:underline mt-auto"
                   >
                     Add To Cart
                   </button>

@@ -66,7 +66,8 @@ function ProductDetails() {
   const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
   // 🔥 Convert image filename → actual image
-  const actualImage = imageMap[product.images[0]];
+  // const actualImage = imageMap[product.images[0]];
+  const actualImage = Images[0];
 
   const existingItem = existingCart.find(
     (item) => item._id === product.productId
@@ -162,9 +163,14 @@ function ProductDetails() {
     );
   }
 
-  const Images = product.images.map(
-    (img) => `/src/assets/images/${img}`
-  );
+  // const Images = product.images.map(
+  //   (img) => `/src/assets/images/${img}`
+  // );
+
+  const Images = product.images.map((imgName) => {
+  // Use the map to get the imported image, or fallback to a placeholder
+  return imageMap[imgName] || imgName;
+  });
 
   const prevImage = () => {
     setSelectedImage((i) => (i === 0 ? Images.length - 1 : i - 1));
